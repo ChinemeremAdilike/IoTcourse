@@ -1,0 +1,81 @@
+//  Diode Fade Task 3 and 4 is combined here 
+
+// Phase A: Task 3.3 - analogWrite() ON/OFF (1s each) for N cycles
+// Phase B: Task 3.4 - analogWrite() Fade (0→255→0) continuously
+
+const int LED_PIN = 4;
+
+// ---- Phase A (Task 3.3) timing and cycles ----
+const int ON_MS  = 1000;     // 1 second ON
+const int OFF_MS = 1000;     // 1 second OFF
+const int ONOFF_CYCLES = 5;  // how many ON/OFF pairs before moving to Phase B
+
+// ---- Phase B (Task 3.4) fade parameters ----
+const int FADE_STEP_DELAY_MS = 5; // smaller = smoother (sim still may look ON/OFF)
+const int PRINT_EVERY = 16;       // throttle Serial prints during fade
+
+// ---- internal state ----
+int onOffCount = 0;
+bool phaseA_done = false;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  Serial.begin(115200);
+
+  Serial.println("Task 3: Starting Phase A (3.3) -> ON/OFF using analogWrite()");
+}
+
+void loop() {
+  if (!phaseA_done) {
+    runPhaseA_OnOff();    // Task 3.3
+  } else {
+    runPhaseB_Fade();     // Task 3.4 (runs forever)
+  }
+}
+
+// ----------------------- Phase A: Task 3.3 -----------------------
+void runPhaseA_OnOff() {
+  // ONE cycle: 1s ON (255), 1s OFF (0)
+  Serial.print("Phase A - Cycle ");
+  Serial.print(onOffCount + 1);
+  Serial.println(": ON");
+  analogWrite(LED_PIN, 255);
+  delay(ON_MS);
+
+  Serial.print("Phase A - Cycle ");
+  Serial.print(onOffCount + 1);
+  Serial.println(": OFF");
+  analogWrite(LED_PIN, 0);
+  delay(OFF_MS);
+
+  onOffCount++;
+
+  if (onOffCount >= ONOFF_CYCLES) {
+    phaseA_done = true;
+    Serial.println("Phase A complete. Moving to Phase B (3.4) - Fade in/out...");
+    // fall through to next loop iteration which will call runPhaseB_Fade()
+  }
+}
+
+// ----------------------- Phase B: Task 3.4 -----------------------
+void runPhaseB_Fade() {
+  // Fade IN: 0 -> 255
+  for (int b = 0; b <= 255; b++) {
+    analogWrite(LED_PIN, b);
+    if ((b % PRINT_EVERY) == 0) {
+      Serial.print("Phase B - Brightness: ");
+      Serial.println(b);
+    }
+    delay(FADE_STEP_DELAY_MS);
+  }
+
+  // Fade OUT: 255 -> 0
+  for (int b = 255; b >= 0; b--) {
+    analogWrite(LED_PIN, b);
+    if ((b % PRINT_EVERY) == 0) {
+      Serial.print("Phase B - Brightness: ");
+      Serial.println(b);
+    }
+    delay(FADE_STEP_DELAY_MS);
+  }
+}
