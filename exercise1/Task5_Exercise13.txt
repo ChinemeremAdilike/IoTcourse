@@ -1,0 +1,36 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+#define BUTTON_PIN 2
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+int cursorCol = 0;
+bool lastButtonState = HIGH;
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  lcd.init();
+  lcd.backlight();
+}
+
+void loop() {
+  // Read potentiometer and map to column
+  int potValue = analogRead(A0);
+  cursorCol = map(potValue, 0, 1023, 0, 15);
+
+  // Move cursor
+  lcd.setCursor(cursorCol, 0);
+
+  // Read button
+  bool buttonState = digitalRead(BUTTON_PIN);
+
+  // On button press, write character
+  if (lastButtonState == HIGH && buttonState == LOW) {
+    lcd.print("#");
+  }
+
+  lastButtonState = buttonState;
+  delay(100);
+}

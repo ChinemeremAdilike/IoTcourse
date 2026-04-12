@@ -1,0 +1,15 @@
+#include <Servo.h>
+
+Servo myServo;
+
+void setup() {
+  myServo.attach(5);   // Servo signal pin
+}
+
+void loop() {
+  int potValue = analogRead(A0);              // 0–1023
+  int angle = map(potValue, 0, 1023, 0, 180); // map to servo angle
+
+  myServo.write(angle);                       // move servo
+  delay(10);
+}

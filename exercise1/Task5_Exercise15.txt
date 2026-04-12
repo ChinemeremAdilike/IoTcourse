@@ -1,0 +1,23 @@
+#include <Servo.h>
+
+Servo myServo;
+
+void setup() {
+  Serial.begin(9600);
+  myServo.attach(5);   // Servo signal pin
+  Serial.println("Enter an angle (0-180):");
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    int angle = Serial.parseInt();   // Read number from Serial
+
+    if (angle >= 0 && angle <= 180) {
+      myServo.write(angle);
+      Serial.print("Servo moved to: ");
+      Serial.println(angle);
+    } else {
+      Serial.println("Invalid angle! Use 0-180.");
+    }
+  }
+}

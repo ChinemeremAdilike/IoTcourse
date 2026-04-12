@@ -1,0 +1,22 @@
+#define LED_PIN 8
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  Serial.begin(9600);
+  Serial.println("Type 1 to turn LED ON and 0 to turn LED OFF");
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    char command = Serial.read();
+
+    if (command == '1') {
+      digitalWrite(LED_PIN, HIGH);
+      Serial.println("LED ON");
+    } 
+    else if (command == '0') {
+      digitalWrite(LED_PIN, LOW);
+      Serial.println("LED OFF");
+    }
+  }
+}

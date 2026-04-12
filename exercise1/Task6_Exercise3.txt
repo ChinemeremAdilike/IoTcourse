@@ -1,0 +1,16 @@
+#define LED_PIN 8
+
+byte pattern = B10101010;   // Change this to ANY pattern
+int bitDelay = 200;         // Time per bit (ms)
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  for (int i = 7; i >= 0; i--) {
+    bool bitValue = bitRead(pattern, i);
+    digitalWrite(LED_PIN, bitValue);
+    delay(bitDelay);
+  }
+}

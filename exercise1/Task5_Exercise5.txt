@@ -1,0 +1,22 @@
+#include <Servo.h>
+
+Servo myServo;   // create servo object
+int pos = 0;     // position variable
+
+void setup() {
+  myServo.attach(5);   // attach servo to pin D5
+}
+
+void loop() {
+  // move from 0 to 180
+  for (pos = 0; pos <= 180; pos++) {
+    myServo.write(pos);
+    delay(15);
+  }
+
+  // move from 180 back to 0
+  for (pos = 180; pos >= 0; pos--) {
+    myServo.write(pos);
+    delay(15);
+  }
+}

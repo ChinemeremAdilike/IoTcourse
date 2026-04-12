@@ -1,0 +1,24 @@
+#include <Servo.h>
+
+Servo myservo;
+
+void setup() {
+  myservo.attach(5);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int tempRaw = analogRead(A0);
+
+  // Simulate temperature: 0–50°C
+  float temperature = map(tempRaw, 0, 1023, 0, 50);
+
+  int servoAngle = map(temperature, 0, 50, 0, 180);
+  myservo.write(servoAngle);
+
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" C");
+
+  delay(500);
+}

@@ -1,0 +1,19 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+  lcd.init();        // Initialize LCD
+  lcd.backlight();   // Turn on backlight
+
+  lcd.setCursor(0, 0);          // First row
+  lcd.print("Chinemerem");
+
+  lcd.setCursor(0, 1);          // Second row
+  lcd.print("Color: Blue");     // I had to display the color as text because my hardware does not support color display
+}
+
+void loop() {
+  // Nothing needed here
+}

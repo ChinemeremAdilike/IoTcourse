@@ -1,0 +1,12 @@
+#define LED_PIN 9   // PWM pin
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  int potValue = analogRead(A0);           // 0–1023
+  int brightness = map(potValue, 0, 1023, 0, 255);
+
+  analogWrite(LED_PIN, brightness);        // PWM output
+}

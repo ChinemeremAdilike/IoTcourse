@@ -1,0 +1,20 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+  lcd.init();
+  lcd.backlight();
+}
+
+void loop() {
+  int potValue = analogRead(A0);            // 0–1023
+  int column = map(potValue, 0, 1023, 0, 15);
+
+  lcd.clear();
+  lcd.setCursor(column, 0);                 // Move cursor
+  lcd.print("*");
+
+  delay(200);
+}

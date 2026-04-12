@@ -1,0 +1,44 @@
+#include <Servo.h>
+
+#define RELAY_PIN 7
+#define INTERRUPT_PIN 2
+
+Servo myservo;
+volatile bool emergencyStop = false;
+
+void emergencyISR() {
+  emergencyStop = true;
+}
+
+void setup() {
+  myservo.attach(5);
+  pinMode(RELAY_PIN, OUTPUT);
+  pinMode(INTERRUPT_PIN, INPUT_PULLUP);
+
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), emergencyISR, FALLING);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (emergencyStop) {
+    digitalWrite(RELAY_PIN, LOW);
+    myservo.write(0);
+    Serial.println("EMERGENCY STOP ACTIVATED");
+    while (1); // system halts permanently
+  }
+
+  int tempRaw = analogRead(A0);
+  float temperature = map(tempRaw, 0, 1023, 0, 50);
+
+  int angle = map(temperature, 0, 50, 0, 180);
+  myservo.write(angle);
+
+  if (temperature > 28) {
+    digitalWrite(RELAY_PIN, HIGH);
+  } else {
+    digitalWrite(RELAY_PIN, LOW);
+  }
+
+  delay(500);
+}

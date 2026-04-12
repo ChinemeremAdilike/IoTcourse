@@ -1,0 +1,13 @@
+#define BUZZER_PIN 6
+
+void setup() {
+  pinMode(BUZZER_PIN, OUTPUT);
+}
+
+void loop() {
+  int potValue = analogRead(A0);                 // 0–1023
+  int frequency = map(potValue, 0, 1023, 100, 2000);
+
+  tone(BUZZER_PIN, frequency);                   // Play tone
+  delay(50);
+}

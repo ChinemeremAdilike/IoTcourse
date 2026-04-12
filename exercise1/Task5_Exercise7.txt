@@ -1,0 +1,12 @@
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Type something:");
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    char incoming = Serial.read();
+    Serial.print("You typed: ");
+    Serial.println(incoming);
+  }
+}

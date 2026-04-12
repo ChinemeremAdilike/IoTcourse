@@ -1,0 +1,42 @@
+#define SENSOR_PIN A0
+#define LED_PIN 8
+
+int sensorValue;
+int sensorMin = 1023;
+int sensorMax = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(LED_PIN, OUTPUT);
+
+  Serial.println("Calibrating for 5 seconds...");
+
+  // 🔹 Calibration phase (first 5 seconds)
+  while (millis() < 5000) {
+    sensorValue = analogRead(SENSOR_PIN);
+
+    if (sensorValue > sensorMax) {
+      sensorMax = sensorValue;
+    }
+
+    if (sensorValue < sensorMin) {
+      sensorMin = sensorValue;
+    }
+  }
+
+  Serial.print("Min light: ");
+  Serial.println(sensorMin);
+  Serial.print("Max light: ");
+  Serial.println(sensorMax);
+}
+
+void loop() {
+  sensorValue = analogRead(SENSOR_PIN);
+
+  // Dark condition → LED ON
+  if (sensorValue <= sensorMin + 20) {
+    digitalWrite(LED_PIN, HIGH);
+  } else {
+    digitalWrite(LED_PIN, LOW);
+  }
+}

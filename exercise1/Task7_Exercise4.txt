@@ -1,0 +1,30 @@
+#include <Servo.h>
+
+#define RELAY_PIN 7
+
+Servo myservo;
+
+void setup() {
+  myservo.attach(5);
+  pinMode(RELAY_PIN, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int tempRaw = analogRead(A0);
+  float temperature = map(tempRaw, 0, 1023, 0, 50);
+
+  int angle = map(temperature, 0, 50, 0, 180);
+  myservo.write(angle);
+
+  if (temperature > 28) {
+    digitalWrite(RELAY_PIN, HIGH);  // Relay ON
+  } else {
+    digitalWrite(RELAY_PIN, LOW);   // Relay OFF
+  }
+
+  Serial.print("Temp: ");
+  Serial.println(temperature);
+
+  delay(500);
+}
