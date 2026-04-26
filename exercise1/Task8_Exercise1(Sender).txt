@@ -1,0 +1,15 @@
+#define BUTTON_PIN 4
+#define TRANSMIT_PIN 8
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(TRANSMIT_PIN, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(BUTTON_PIN) == LOW) {
+    digitalWrite(TRANSMIT_PIN, HIGH); // send 1
+  } else {
+    digitalWrite(TRANSMIT_PIN, LOW);  // send 0
+  }
+}

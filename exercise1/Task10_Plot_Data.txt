@@ -1,0 +1,22 @@
+import sqlite3
+import matplotlib.pyplot as plt
+
+conn = sqlite3.connect("sensor_data.db")
+cursor = conn.cursor()
+
+cursor.execute("SELECT timestamp, value FROM readings")
+rows = cursor.fetchall()
+conn.close()
+
+times = [row[0] for row in rows]
+values = [row[1] for row in rows]
+
+plt.figure(figsize=(10, 5))
+plt.plot(times, values, marker="o")
+plt.xlabel("Time")
+plt.ylabel("Sensor Value")
+plt.title("Sensor Readings Over Time")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.grid(True)
+plt.show()

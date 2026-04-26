@@ -1,0 +1,7 @@
+import time
+import random
+
+while True:
+    sensor_value = random.randint(20, 30)  # simulate sensor reading
+    print(sensor_value)
+    time.sleep(2)

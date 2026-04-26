@@ -1,0 +1,22 @@
+#define BUTTON_PIN 4
+#define TRANSMIT_PIN 8
+
+byte data = B10110010;
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(TRANSMIT_PIN, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(BUTTON_PIN) == LOW) {
+    for (byte mask = 0b00000001; mask > 0; mask <<= 1) {
+      if (data & mask) {
+        digitalWrite(TRANSMIT_PIN, HIGH);
+      } else {
+        digitalWrite(TRANSMIT_PIN, LOW);
+      }
+      delay(1000); // 1 second per bit
+    }
+  }
+}

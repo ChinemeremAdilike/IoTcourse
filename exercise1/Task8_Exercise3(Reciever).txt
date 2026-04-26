@@ -1,0 +1,38 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+#define DATA_PIN 8
+#define CLOCK_PIN 2
+
+volatile byte receivedData = 0;
+volatile int bitIndex = 7;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void clockISR() {
+  int bit = digitalRead(DATA_PIN);
+  bitWrite(receivedData, bitIndex, bit);
+  bitIndex--;
+}
+
+void setup() {
+  pinMode(DATA_PIN, INPUT);
+  pinMode(CLOCK_PIN, INPUT);
+
+  attachInterrupt(digitalPinToInterrupt(CLOCK_PIN), clockISR, RISING);
+
+  lcd.init();
+  lcd.backlight();
+}
+
+void loop() {
+  if (bitIndex < 0) {
+    lcd.clear();
+    lcd.print("Received:");
+    lcd.setCursor(0, 1);
+    lcd.print(receivedData, BIN);
+
+    bitIndex = 7;
+    receivedData = 0;
+  }
+}

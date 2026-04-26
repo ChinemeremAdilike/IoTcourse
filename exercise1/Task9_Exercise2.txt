@@ -1,0 +1,18 @@
+import paho.mqtt.client as mqtt
+
+def on_message(client, userdata, msg):
+    state = msg.payload.decode()
+
+    if state == "OPEN":
+        print("LED ON  (Door OPEN)")
+    elif state == "CLOSED":
+        print("LED OFF (Door CLOSED)")
+
+client = mqtt.Client()
+client.on_message = on_message
+
+client.connect("localhost", 1883, 60)
+client.subscribe("sensor/door")
+
+print("Receiver running...")
+client.loop_forever()

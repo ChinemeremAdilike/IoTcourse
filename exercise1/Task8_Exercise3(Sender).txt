@@ -1,0 +1,24 @@
+#define DATA_PIN 8
+#define CLOCK_PIN 9
+#define BUTTON_PIN 4
+
+byte data = B11110000;
+
+void setup() {
+  pinMode(DATA_PIN, OUTPUT);
+  pinMode(CLOCK_PIN, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+}
+
+void loop() {
+  if (digitalRead(BUTTON_PIN) == LOW) {
+    for (int i = 7; i >= 0; i--) {
+      digitalWrite(DATA_PIN, bitRead(data, i));
+
+      digitalWrite(CLOCK_PIN, HIGH); // clock rising edge
+      delay(200);
+      digitalWrite(CLOCK_PIN, LOW);
+      delay(200);
+    }
+  }
+}

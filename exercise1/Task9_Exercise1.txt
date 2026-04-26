@@ -1,0 +1,17 @@
+import time
+import paho.mqtt.client as mqtt
+
+client = mqtt.Client()
+client.connect("localhost", 1883, 60)
+
+print("Sensor simulator started")
+print("Sending door state...")
+
+while True:
+    client.publish("sensor/door", "OPEN")
+    print("Sent: OPEN")
+    time.sleep(5)
+
+    client.publish("sensor/door", "CLOSED")
+    print("Sent: CLOSED")
+    time.sleep(5)
